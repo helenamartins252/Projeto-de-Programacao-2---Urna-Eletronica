@@ -133,7 +133,7 @@ O pacote `modelo` nunca usa nada de tela.
 
 ## Como compilar e executar
 
-Em breve. Esta seção será preenchida quando o projeto estiver executável, com a versão do Java, os comandos e as dependências.
+Em breve. (Esta seção será preenchida quando o projeto estiver executável, com a versão do Java, os comandos e as dependências)
 
 ## Andamento
 
