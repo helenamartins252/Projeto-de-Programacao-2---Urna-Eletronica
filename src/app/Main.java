@@ -61,6 +61,7 @@ public class Main {
         }
     }
 
+   
     public static Eleitor buscarEleitor(List<Eleitor> eleitores, String identificacao)
             throws EleitorNaoEncontradoException {
         for (Eleitor e : eleitores) {
@@ -76,7 +77,7 @@ public class Main {
             System.out.print("Título de eleitor ou CPF: ");
             Eleitor eleitor = buscarEleitor(eleitores, teclado.nextLine().trim());
 
-            
+           
             if (eleitor.jaVotou()) {
                 throw new EleitorJaVotouException(eleitor.getNome());
             }
@@ -131,7 +132,6 @@ public class Main {
         }
     }
 
-   
     private static boolean confirmar(Scanner teclado, String pergunta) {
         while (true) {
             System.out.print(pergunta);
