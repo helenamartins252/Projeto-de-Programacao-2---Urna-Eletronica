@@ -78,28 +78,73 @@ public class Main {
             System.out.print("Título de eleitor ou CPF: ");
             Eleitor eleitor = buscarEleitor(eleitores, teclado.nextLine().trim());
 
+            // confere antes de pedir o numero, para nao fazer o eleitor digitar a toa
+            if (eleitor.jaVotou()) {
+                throw new EleitorJaVotouException(eleitor.getNome());
+            }
+            if (urna.isEncerrada()) {
+                throw new UrnaEncerradaException(urna.getSecao());
+            }
+
             System.out.println("Candidatos:");
             for (Candidato c : urna.getCandidatos()) {
                 System.out.println("  " + c.getNumero() + " - " + c.getNome() + " (" + c.getPartido() + ")");
             }
-            System.out.print("Digite o número do candidato (ou B para branco): ");
-            String entrada = teclado.nextLine().trim();
 
-            if (entrada.equalsIgnoreCase("B")) {
-                eleitor.votarBranco(urna);
-                System.out.println("Voto em branco registrado. FIM.");
-            } else {
-                TipoVoto tipo = eleitor.votar(urna, Integer.parseInt(entrada));
+            while (true) {
+                System.out.print("Digite o número do candidato (ou B para branco): ");
+                String entrada = teclado.nextLine().trim();
+
+                if (entrada.equalsIgnoreCase("B")) {
+                    eleitor.votarBranco(urna);
+                    System.out.println("Voto em branco registrado. FIM.");
+                    return;
+                }
+
+                int numero = Integer.parseInt(entrada);
+                Candidato escolhido = urna.buscarCandidato(numero);
+                boolean confirmou;
+                if (escolhido == null) {
+                    System.out.println("Número inexistente: o voto será considerado NULO.");
+                    confirmou = confirmar(teclado,
+                            "Confirma voto nulo (S) ou prefere escolher outro número (N)? ");
+                } else {
+                    System.out.println("Candidato: " + escolhido.getNome()
+                            + " (" + escolhido.getPartido() + ")");
+                    confirmou = confirmar(teclado, "Confirma o voto (S) ou corrige (N)? ");
+                }
+
+                if (!confirmou) {
+                    continue;   // CORRIGE: volta a pedir o numero
+                }
+
+                TipoVoto tipo = eleitor.votar(urna, numero);
                 if (tipo == TipoVoto.NULO) {
-                    System.out.println("Número inexistente: o voto foi registrado como nulo. FIM.");
+                    System.out.println("Voto nulo registrado. FIM.");
                 } else {
                     System.out.println("Voto registrado. FIM.");
                 }
+                return;
             }
         } catch (EleitorNaoEncontradoException | EleitorJaVotouException | UrnaEncerradaException e) {
             System.out.println("ERRO: " + e.getMessage());
         } catch (NumberFormatException e) {
             System.out.println("ERRO: digite apenas números (ou B para branco).");
+        }
+    }
+
+    /** Pergunta S ou N ate o eleitor responder certo. */
+    private static boolean confirmar(Scanner teclado, String pergunta) {
+        while (true) {
+            System.out.print(pergunta);
+            String resposta = teclado.nextLine().trim();
+            if (resposta.equalsIgnoreCase("S")) {
+                return true;
+            }
+            if (resposta.equalsIgnoreCase("N")) {
+                return false;
+            }
+            System.out.println("Digite S ou N.");
         }
     }
 
@@ -117,3 +162,4 @@ public class Main {
         System.out.println("Total de votos: " + urna.getTotalVotos());
     }
 }
+
