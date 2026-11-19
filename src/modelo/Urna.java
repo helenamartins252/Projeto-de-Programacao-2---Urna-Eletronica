@@ -11,7 +11,7 @@ public class Urna {
     private String secao;
     private boolean encerrada;
     private List<Candidato> candidatos;   
-    private List<Voto> votos;             
+    private List<Voto> votos;            
 
     public Urna(int id, String secao, List<Candidato> candidatos) {
         this.id = id;
@@ -37,7 +37,7 @@ public class Urna {
         return Collections.unmodifiableList(candidatos);
     }
 
-
+   
     public Candidato buscarCandidato(int numero) {
         for (Candidato c : candidatos) {
             if (c.getNumero() == numero) {
@@ -47,6 +47,7 @@ public class Urna {
         return null;
     }
 
+    
     public void votar(Candidato candidato)
             throws UrnaEncerradaException, CandidatoInvalidoException {
         verificarAberta();
@@ -56,7 +57,7 @@ public class Urna {
         votos.add(new Voto(TipoVoto.VALIDO, candidato));
     }
 
-   
+    
     public TipoVoto votar(int numero) throws UrnaEncerradaException {
         verificarAberta();
         for (Candidato c : candidatos) {
