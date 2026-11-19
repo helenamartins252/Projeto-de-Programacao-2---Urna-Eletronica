@@ -13,7 +13,6 @@ import modelo.TipoVoto;
 import modelo.Urna;
 import modelo.UrnaEncerradaException;
 
-/** Versao interativa: menu no console (votar, encerrar e apurar). */
 public class Main {
 
     public static void main(String[] args) {
@@ -62,7 +61,6 @@ public class Main {
         }
     }
 
-    /** Procura o eleitor pelo titulo ou CPF. */
     public static Eleitor buscarEleitor(List<Eleitor> eleitores, String identificacao)
             throws EleitorNaoEncontradoException {
         for (Eleitor e : eleitores) {
@@ -78,7 +76,7 @@ public class Main {
             System.out.print("Título de eleitor ou CPF: ");
             Eleitor eleitor = buscarEleitor(eleitores, teclado.nextLine().trim());
 
-            // confere antes de pedir o numero, para nao fazer o eleitor digitar a toa
+            
             if (eleitor.jaVotou()) {
                 throw new EleitorJaVotouException(eleitor.getNome());
             }
@@ -115,7 +113,7 @@ public class Main {
                 }
 
                 if (!confirmou) {
-                    continue;   // CORRIGE: volta a pedir o numero
+                    continue;   
                 }
 
                 TipoVoto tipo = eleitor.votar(urna, numero);
@@ -133,7 +131,7 @@ public class Main {
         }
     }
 
-    /** Pergunta S ou N ate o eleitor responder certo. */
+   
     private static boolean confirmar(Scanner teclado, String pergunta) {
         while (true) {
             System.out.print(pergunta);
