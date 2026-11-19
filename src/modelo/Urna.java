@@ -10,8 +10,8 @@ public class Urna {
     private int id;
     private String secao;
     private boolean encerrada;
-    private List<Candidato> candidatos;   // agregacao: chega pelo construtor
-    private List<Voto> votos;             // composicao: nasce dentro da urna
+    private List<Candidato> candidatos;   
+    private List<Voto> votos;             
 
     public Urna(int id, String secao, List<Candidato> candidatos) {
         this.id = id;
@@ -37,7 +37,16 @@ public class Urna {
         return Collections.unmodifiableList(candidatos);
     }
 
-    /** Voto direto no candidato. */
+
+    public Candidato buscarCandidato(int numero) {
+        for (Candidato c : candidatos) {
+            if (c.getNumero() == numero) {
+                return c;
+            }
+        }
+        return null;
+    }
+
     public void votar(Candidato candidato)
             throws UrnaEncerradaException, CandidatoInvalidoException {
         verificarAberta();
@@ -47,7 +56,7 @@ public class Urna {
         votos.add(new Voto(TipoVoto.VALIDO, candidato));
     }
 
-    /** Voto pelo numero. Numero que nao existe vira voto nulo. */
+   
     public TipoVoto votar(int numero) throws UrnaEncerradaException {
         verificarAberta();
         for (Candidato c : candidatos) {
@@ -94,7 +103,7 @@ public class Urna {
         return votos.size();
     }
 
-    /** Lista nao modificavel: ninguem altera os votos de fora. */
+    
     public List<Voto> getVotos() {
         return Collections.unmodifiableList(votos);
     }
