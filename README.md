@@ -147,3 +147,43 @@ Em breve. (Esta seção será preenchida quando o projeto estiver executável, c
 ## Commits
 
 Cada commit começa com o código do requisito ou da regra que ele atende, por exemplo: `RF2.3: votar por número com confirmação`.
+
+
+
+
+## Estrutura
+
+```
+pom.xml                  Maven (Java 17, sqlite-jdbc, JUnit 5)
+src/modelo/              regras do problema (sem tela e sem SQL)
+src/dao/                 SQLite por JDBC e boletim em TXT
+src/app/                 Main (menu de console), DadosIniciais e Demo
+test/modelo, test/dao    testes JUnit 5
+urna.db                  banco, criado sozinho na primeira execução
+```
+
+## Como executar
+
+Precisa de Java 17 ou mais novo e Maven. Na primeira vez é preciso internet (o Maven baixa o driver do SQLite).
+
+| O que fazer | Comando (na pasta do pom.xml) |
+| --- | --- |
+| Menu de console | `mvn compile exec:java` |
+| Testes (32 testes) | `mvn test` |
+| Demo da Entrega 2 (só em memória, sem banco) | `mvn compile exec:java -Dexec.mainClass=app.Demo` |
+| Recomeçar do zero | apagar o arquivo `urna.db` |
+
+- A mensagem do SLF4J sobre logger na primeira execução é só um aviso do driver; pode ignorar.
+- Se os acentos saírem errados no terminal do Windows, rode `chcp 65001` antes.
+
+## Menu
+
+`1` cadastrar eleitor · `2` cadastrar candidato · `3` cadastrar urna · `4` votar · `5` encerrar urna ·
+`6` apurar · `7` gerar boletim (TXT) · `8` carregar dados de exemplo · `0` sair
+
+Dados de exemplo (menu 8): candidatos Ana Souza (nº 10, título 1001), Bruno Lima (nº 20, título 1002) e
+Carla Dias (nº 30, título 1003); eleitores Diego Alves (2001), Elisa Rocha (2002), Fábio Costa (2003) e
+Gabriela Nunes (2004); urna 1, seção 001, com os três candidatos.
+
+
+
